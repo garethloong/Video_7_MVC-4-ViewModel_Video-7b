@@ -1,0 +1,50 @@
+EF nije bas tako dobar npr. nekad nece da uradi uncheck Identity polja na jednoj tabeli i check u drugoj tabeli (npr. kod veze 1:1) pa je to potrebno rucno uraditi u migracijskim fajlovima ili sa:
+modelBuilder.Entity<Department>().Property(t => t.DepartmentID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+
+https://msdn.microsoft.com/en-us/library/aa937723(v=vs.113).aspx
+https://msdn.microsoft.com/en-us/data/jj591620
+https://msdn.microsoft.com/en-us/data/jj591617
+
+Stara verzija iz 2010:
+https://blogs.msdn.microsoft.com/adonet/2010/12/06/ef-feature-ctp5-fluent-api-samples/
+
+enable-migrations
+add-migration nekaMigracija
+update-database
+Get-Migrations (prikazuje sve migracije na sistemu)
+Get-Migrations -ConnectionStringName MojConnectionString   //vraca sve migracije koje su aplicirane na dati connection string
+Remove-Migration  (brise zadnju dodatu migraciju - ovo ima u EF Core with ASP.NET Core v1.0.0 - ne znam da li ima u EF za full ASP.NET)
+
+
+Da bi neku migraciju obrisali, prvo trebamo uraditi rollback nazad na neku prije nje, i onda obrisati neke (ili sve) koje zelimo do tog momenta (jer nakon rollbacka vise nece biti aktivne). Ako nakon brisanja migracija i dalje imamo izmjene u kodu u odnosu na migraciju na kojoj se trnutno nalazimo (npr. nismo obrisali izmjene u kodu od prethodnih migracija), EF ce nam ispisati da imamo jos pending izmjena koje mozemo obrisati ili ih strpati u novu migraciju sa:
+
+add-migration NovaMigracijaNaziv
+
+-----------------------------------------------------------------------------
+Rollback - tek nakon sto uradimo rollback, mozemo da fizicki obrisemo fajlove migracija do tacke gdje smo uradili rollback:
+
+Update-Database -TargetMigration:"name_of_migration"
+
+isto sto i:
+
+Update-Database -Target:"name_of_migration"
+Update-Database -t:"name_of_migration"
+
+What you are doing above is saying that you want to rollback all migrations UNTIL you're left with the migration specified. Thus, if you use GET-MIGRATIONS and you find that you have A, B, C, D, and E, then using this command will rollback E and D to get you to C:
+
+Update-Database -TargetMigration:"C"
+
+Also, unless anyone can comment to the contrary, I noticed that you can use an ordinal value and the short -Target switch (thus, -Target is the same as -TargetMigration). If you want to rollback all migrations and start over, you can use:
+
+update-database -target:0
+
+0, above, would rollback even the FIRST migration (this is a destructive command--be sure you know what you're doing before you use it!). The name of the migration with index 0 is $InitialDatabase. So in that case, you have to use the 0 (ordinal) value. Likewise, if you have applied migrations A, B, C, D, and E (in that order), then the ordinal 1 should refer to A, ordinal 2 should refer to B, and so on. So to rollback to B you could use either:
+
+Update-Database -TargetMigration:"B"
+
+or
+
+Update-Database -TargetMigration:2
+
+-------------------------------------------------------

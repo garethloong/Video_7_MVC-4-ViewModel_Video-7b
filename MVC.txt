@@ -1,0 +1,90 @@
+- Web Razvoj i Dizajn (2015/2016):
+https://www.youtube.com/playlist?list=PLJCjqoTZy0H8aVebuek1GknTYPyAv_XuP
+- Razvoj softvera I (2016/2017):
+https://www.youtube.com/playlist?list=PLJCjqoTZy0H_iUljzRiyIGGBE6OQWq56W
+- Razvoj softvera I (2017/2018):
+https://www.youtube.com/playlist?list=PLJCjqoTZy0H-blmI_0PUon04Z4Y1xbtLx
+- Razvoj softvera II (2016/2017)
+https://www.youtube.com/playlist?list=PLJCjqoTZy0H9gEi9Jz3sF__kZSlIz9xkr
+
+C# Guide:
+https://docs.microsoft.com/en-us/dotnet/csharp/index
+
+C# programming guide:
+https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/index
+
+C# keywords descriptions:
+https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/virtual
+
+LINQ:
+https://www.google.ba/search?q=linq+expression&oq=linq+expre&aqs=chrome.0.0j69i57j0l4.2679j0j7&sourceid=chrome&ie=UTF-8
+https://www.google.ba/search?q=linq+tutorial&oq=linq+tutor&aqs=chrome.0.0j69i57j0l4.4404j0j7&sourceid=chrome&ie=UTF-8
+
+----------------------------------------------------------------------
+[Display(Name = "User name")]
+[MaxLength(50)]
+
+
+LINQ expression:
+
+ctx.Smjerovi.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Fakultet.Naziv + " " + x.Naziv })
+
+se moze napisati i kao:
+
+foreach(var x in smjerovi)
+	yield return new SelectListItem { Value = x.Id.ToString(), Text = x.Fakultet.Naziv + " " + x.Naziv };
+
+ili kao:
+
+var stavke = new List<SelectListItem>();
+foreach(var x in smjerovi)
+	stavke.add(new SelectListItem { Value = x.Id.ToString(), Text = x.Fakultet.Naziv + " " + x.Naziv });
+return stavke;
+
+-------------------------------------------
+
+http://stevemichelotti.com/aspnet-mvc-view-model-patterns/
+
+-------------------------------------------
+Debug mode se otvara klikom na isto dugme kao i run IISExpress(Firefox)
+
+http://stevemichelotti.com/aspnet-mvc-view-model-patterns/
+
+MVC ViewModel sadrzi pravila koja ce vrijediti za UI npr. Validacija podataka, poruka koja se javlja ako podaci nisu ispravni, podaci za ComboBox/DropDown listu itd.
+--------------------------------------------
+Kad se pozove:
+http://localhost:54913/Student/
+
+onda se poziva defaultna akcija Index.cshtml
+--------------------------------------------
+Kad se pozove domena/adresa aplikacije moze se zadati home controller koji ce vracati na default view:
+
+/Controllers/HomeController.cs
+--------------------------------------------
+Funkcije u Controlleru predstavljaju Akcije.
+
+Ako smo Controlleru dali ime StudentController, funkciju Prikazi unutar njega cemo pozvati na ovaj nacin:
+http://localhost:54913/Student/Prikazi
+
+Prosljedjivanje parametara (a=3 i b=4) kontroleru Racunaj koji vraca sumu ova dva broja:
+http://localhost:54913/Student/Racunaj?a=3&b=4
+
+---------------------------------------
+<!-- Single statement block -->
+@{ var myMessage = "Hello World"; }
+
+<!-- Inline expression or variable -->
+<p>The value of myMessage is: @myMessage</p>
+
+<!-- Multi-statement block -->
+@{
+var greeting = "Welcome to our site!";
+var weekDay = DateTime.Now.DayOfWeek;
+var greetingMessage = greeting + " Here in Huston it is: " + weekDay;
+}
+<p>The greeting is: @greetingMessage</p> 
+----------------------------------------
+
+Prebacivanje podataka iz Controllera na View se radi sa:
+ViewBag - dinamicki objekat
+ViewData["neki_kljuc"] - objekat koji ima svoj kljuc u obliku stringa
