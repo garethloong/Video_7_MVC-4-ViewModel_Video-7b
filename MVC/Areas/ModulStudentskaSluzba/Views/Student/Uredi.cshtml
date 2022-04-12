@@ -1,0 +1,53 @@
+﻿@using System.Collections.Generic
+@using MVC.Models
+
+@{
+    //Layout = null;
+    List<Smjer> smjerovi = (List<Smjer>)ViewData["smjerovi"];
+    Student student = (Student)ViewData["student"];
+    ViewBag.Title = "Uredjivanje studenta";
+}
+
+
+
+<form action="/ModulStudentskaSluzba/Student/Snimi">
+    <input type="hidden" value="@student.Id" name="studentId" />
+
+    <div class="form-group">
+        <label>Ime</label>
+        <input type="text" name="ime" value="@student.Korisnik.Ime" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Prezime</label>
+        <input type="text" name="prezime" value="@student.Korisnik.Prezime" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Broj indexa</label>
+        <input type="text" name="brojIndexa" value="@student.BrojIndexa" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" value="@student.Korisnik.Username" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Lozinka</label>
+        <input type="password" name="password" value="@student.Korisnik.Password" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Datum rodjenja</label>
+        <input type="datetime" name="datumRodjenja" value="@student.Korisnik.DatumRodjenja" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Smjer</label>
+        <select name="smjerId" class="form-control">
+            @foreach (var item in smjerovi)
+            {
+                <option value="@item.Id" @(item.Id == student.SmjerId ? "selected" : "")>@item.Naziv</option>
+            }
+        </select>
+    </div>
+
+    <input type="submit" value="Snimi" class="btn btn-default" />
+
+</form>
+

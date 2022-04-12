@@ -1,0 +1,66 @@
+﻿@using System
+@using System.Collections.Generic
+@using MVC.Models
+@using MVC.Areas.ModulStudentskaSluzba.Data;
+
+@*@{
+        // Layout = null;
+        // DateTime x = (DateTime)ViewData["x"]; // outboxing from an attribute to an object
+        List<Student> studenti = (List<Student>)ViewData["studenti"];
+        ViewBag.Title = "Prikaz studenata";
+    }*@
+
+
+@* Prethodna ViewData sekcija nam vise ne treba jer sad podatke iz controllera na View dobijamo u obliku ViewModela, koristenjem View konstruktora (u controlleru), s tim da moramo ovdje navesti ViewModel u sljedecoj liniji koda*@
+@model MVC.Areas.ModulStudentskaSluzba.Data.StudentPrikaziViewModel
+
+
+@*<form action="/ModulStudentskaSluzba/Student/Prikazi">  // mozemo izostaviti akciju na view Prikazi jer je to nas trenutni view kojeg necemo napustati *@
+<form>
+    @* Drugi nacin za generisanje comboboxa koristenjem ASP.NET helpera i ViewModela (prije smo koristili HTML <select> tag i @foreach unutar).
+        SmjerId se koristi za odabir u DropDown listi. Da bi ovaj combobox (DropDown) radio, mora se nalaziti u HTML formi *@
+    @Html.DropDownListFor(model => model.SmjerId, Model.smjeroviStavke)
+    <input type="submit" value="Prikazi" />
+</form>
+
+
+
+Spisak studenata:
+<br />
+<table class="table table-striped" style="border: 1px solid green;">
+    <thead style="background-color: green; color: white;">
+        <tr>
+            <th>id</th>
+            <th>ime</th>
+            <th>prezime</th>
+            <th>Broj indexa</th>
+            <th>Fakultet</th>
+            <th>Smjer</th>
+            <th>Broj ECTS bodova</th>
+            <th>Broj polozenih predmeta</th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (StudentPrikaziViewModel.StudenInfo item in Model.studenti)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Ime</td>
+                <td>@item.Prezime</td>
+                <td>@item.BrojIndexa</td>
+                <td>@item.Fakultet_Naziv</td>
+                <td>@item.Smjer_Naziv</td>
+                <td>@item.ECTSukupno</td>
+                <td>@item.BrojPolozenihPredmeta</td>
+
+                <td>
+                    <a href="/ModulStudentskaSluzba/Student/Obrisi?studentId=@item.Id">Delete</a>
+                    <a href="/ModulStudentskaSluzba/Student/Uredi?studentId=@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
